@@ -12,6 +12,10 @@ namespace Granges.MikPicture.Core
     {
         private readonly Dispatcher dispatcher = new Dispatcher();
 
+        private static readonly string[] allowedExtension = new string[] { ".jpg", ".jpeg" };
+
+        private const long OneMegabyte = 1048576;
+
         #region Properties
 
         /// <summary>
@@ -67,7 +71,7 @@ namespace Granges.MikPicture.Core
         /// <returns></returns>
         private IEnumerable<string> GetPicturesFiles()
         {
-            return Directory.GetFiles(SourcePath)
+            return Directory.EnumerateFiles(SourcePath)
                 .Where(f => IsAllowedExtension(f));
         }
 
@@ -80,8 +84,7 @@ namespace Granges.MikPicture.Core
         /// </returns>
         private static bool IsAllowedExtension(string path)
         {
-            return (new string[] { ".jpg", ".jpeg" })
-                .Contains(Path.GetExtension(path).ToLower());
+            return allowedExtension.Contains(Path.GetExtension(path).ToLower());
         }
 
         /// <summary>
@@ -100,36 +103,36 @@ namespace Granges.MikPicture.Core
         /// </summary>
         public void Run()
         {
-            string destPath = Path.Combine(SourcePath, "Converted");
-            if (!Directory.Exists(destPath))
+            string destinationPath = Path.Combine(SourcePath, "Converted");
+            if (!Directory.Exists(destinationPath))
             {
-                Directory.CreateDirectory(destPath);
+                Directory.CreateDirectory(destinationPath);
             }
 
             IEnumerable<string> files = GetPicturesFiles();
 
             Parallel.ForEach(files, sourceFilename =>
             {
-                FileInfo fi = new FileInfo(sourceFilename);
-                if (fi.Length > 1000000)
+                FileInfo fileInfo = new FileInfo(sourceFilename);
+                
+                // Length > 1Mo
+                if (fileInfo.Length > OneMegabyte)
                 {
-                    //OnResizing(sourceFilename);
-
                     dispatcher.Invoke(new Action<string>(OnResizing), new object[] { sourceFilename });
 
-                    // Length > 1Mo
-                    Bitmap img = new Bitmap(sourceFilename);
+                    using (Bitmap image = new Bitmap(sourceFilename))
+                    {
+                        string destFilename = Path.Combine(destinationPath, Path.GetFileName(sourceFilename));
 
-                    string destFilename = Path.Combine(destPath, Path.GetFileName(sourceFilename));
+                        ImageCodecInfo jgpEncoder = GetEncoder(ImageFormat.Jpeg);
 
-                    ImageCodecInfo jgpEncoder = GetEncoder(ImageFormat.Jpeg);
+                        using (EncoderParameters myEncoderParameters = new EncoderParameters(1))
+                        {
+                            myEncoderParameters.Param[0] = new EncoderParameter(Encoder.Quality, Quality);
 
-                    EncoderParameters myEncoderParameters = new EncoderParameters(1);
-                    myEncoderParameters.Param[0] = new EncoderParameter(Encoder.Quality, Quality);
-
-                    img.Save(destFilename, jgpEncoder, myEncoderParameters);
-
-                    img.Dispose();
+                            image.Save(destFilename, jgpEncoder, myEncoderParameters);
+                        }
+                    }
                 }
             });
 
