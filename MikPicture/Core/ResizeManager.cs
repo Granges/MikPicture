@@ -1,30 +1,19 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.IO;
 using System.Drawing;
 using System.Drawing.Imaging;
+using System.IO;
+using System.Linq;
 using System.Threading.Tasks;
-using System.ComponentModel;
-using System.Windows.Forms;
 
-namespace MikPicture
+namespace Granges.MikPicture.Core
 {
-    public class ResizeEventArgs : EventArgs
-    {
-        public string Filename { get; set; }
-
-        public ResizeEventArgs(string filename)
-        {
-            Filename = filename;
-        }
-    }
-
     public class ResizeManager
     {
-        private Dispatcher dispatcher = new Dispatcher();
-        
+        private readonly Dispatcher dispatcher = new Dispatcher();
+
         #region Properties
+
         /// <summary>
         /// Gets or sets the quality.
         /// </summary>
@@ -37,26 +26,28 @@ namespace MikPicture
         /// <value>The source path.</value>
         public string SourcePath { get; set; }
 
-        #endregion
+        #endregion Properties
 
         #region Event
+
         public event EventHandler<ResizeEventArgs> Resizing;
+
         public event EventHandler Ended;
 
         private void OnResizing(string filename)
         {
-            if (Resizing != null)
-                Resizing(this, new ResizeEventArgs(filename));
+            Resizing?.Invoke(this, new ResizeEventArgs(filename));
         }
 
         private void OnEnded()
         {
-            if (Ended != null)
-                Ended(this, EventArgs.Empty);
+            Ended?.Invoke(this, EventArgs.Empty);
         }
-        #endregion
+
+        #endregion Event
 
         #region ctor
+
         /// <summary>
         /// Initializes a new instance of the <see cref="ResizeManager"/> class.
         /// </summary>
@@ -67,7 +58,8 @@ namespace MikPicture
             Quality = quality;
             SourcePath = sourcePath;
         }
-        #endregion
+
+        #endregion ctor
 
         /// <summary>
         /// Gets the pictures files.

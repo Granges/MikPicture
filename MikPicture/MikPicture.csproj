@@ -8,9 +8,9 @@
     <ProjectGuid>{45FAE8FB-D527-47D8-AAC4-17941CD16B12}</ProjectGuid>
     <OutputType>WinExe</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>MikPicture</RootNamespace>
+    <RootNamespace>Granges.MikPicture</RootNamespace>
     <AssemblyName>MikPicture</AssemblyName>
-    <TargetFrameworkVersion>v4.6</TargetFrameworkVersion>
+    <TargetFrameworkVersion>v4.8</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <ApplicationIcon>search4people.ico</ApplicationIcon>
     <FileUpgradeFlags>
@@ -72,6 +72,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Core\ResizeEventArgs.cs" />
     <Compile Include="Dispatcher.cs" />
     <Compile Include="MainForm.cs">
       <SubType>Form</SubType>
@@ -104,7 +105,7 @@
       <DependentUpon>Settings.settings</DependentUpon>
       <DesignTimeSharedInput>True</DesignTimeSharedInput>
     </Compile>
-    <Compile Include="ResizeManager.cs" />
+    <Compile Include="Core\ResizeManager.cs" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="search4people.ico" />

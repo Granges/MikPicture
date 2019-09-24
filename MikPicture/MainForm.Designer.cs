@@ -1,4 +1,4 @@
-﻿namespace MikPicture
+﻿namespace Granges.MikPicture
 {
     partial class MainForm
     {
@@ -69,7 +69,7 @@
             this.btnBrowseSource.TabIndex = 2;
             this.btnBrowseSource.Text = "...";
             this.btnBrowseSource.UseVisualStyleBackColor = true;
-            this.btnBrowseSource.Click += new System.EventHandler(this.btnBrowseSource_Click);
+            this.btnBrowseSource.Click += new System.EventHandler(this.BtnBrowseSource_Click);
             // 
             // folderBrowserDialog
             // 
@@ -84,7 +84,7 @@
             this.btnGO.TabIndex = 5;
             this.btnGO.Text = "&GO";
             this.btnGO.UseVisualStyleBackColor = true;
-            this.btnGO.Click += new System.EventHandler(this.btnGO_Click);
+            this.btnGO.Click += new System.EventHandler(this.BtnGO_Click);
             // 
             // nudQuality
             // 

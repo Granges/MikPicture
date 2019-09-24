@@ -1,13 +1,8 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
-using System.Drawing;
-using System.Linq;
-using System.Text;
 using System.Windows.Forms;
+using Granges.MikPicture.Core;
 
-namespace MikPicture
+namespace Granges.MikPicture
 {
     public partial class MainForm : Form
     {
@@ -21,7 +16,7 @@ namespace MikPicture
         /// </summary>
         /// <param name="sender">The source of the event.</param>
         /// <param name="e">The <see cref="System.EventArgs"/> instance containing the event data.</param>
-        private void btnBrowseSource_Click(object sender, EventArgs e)
+        private void BtnBrowseSource_Click(object sender, EventArgs e)
         {
             if (folderBrowserDialog.ShowDialog() == DialogResult.OK)
             {
@@ -34,11 +29,11 @@ namespace MikPicture
         /// </summary>
         /// <param name="sender">The source of the event.</param>
         /// <param name="e">The <see cref="System.EventArgs"/> instance containing the event data.</param>
-        private void btnGO_Click(object sender, EventArgs e)
+        private void BtnGO_Click(object sender, EventArgs e)
         {
             ResizeManager resizeManager = new ResizeManager(txtFolderSource.Text, (long)nudQuality.Value);
-            resizeManager.Resizing += new EventHandler<ResizeEventArgs>(resizeManager_Resizing);
-            resizeManager.Ended += new EventHandler(resizeManager_Ended);
+            resizeManager.Resizing += new EventHandler<ResizeEventArgs>(ResizeManager_Resizing);
+            resizeManager.Ended += new EventHandler(ResizeManager_Ended);
             resizeManager.Run();
         }
 
@@ -47,7 +42,7 @@ namespace MikPicture
         /// </summary>
         /// <param name="sender">The source of the event.</param>
         /// <param name="e">The <see cref="MikPicture.ResizeEventArgs"/> instance containing the event data.</param>
-        private void resizeManager_Resizing(object sender, ResizeEventArgs e)
+        private void ResizeManager_Resizing(object sender, ResizeEventArgs e)
         {
             lblInformation.Text = string.Format("Conversion de '{0}'", e.Filename);
             //Application.DoEvents();
@@ -58,7 +53,7 @@ namespace MikPicture
         /// </summary>
         /// <param name="sender">The source of the event.</param>
         /// <param name="e">The <see cref="System.EventArgs"/> instance containing the event data.</param>
-        private void resizeManager_Ended(object sender, EventArgs e)
+        private void ResizeManager_Ended(object sender, EventArgs e)
         {
             lblInformation.Text = "Conversion terminée.";
         }
